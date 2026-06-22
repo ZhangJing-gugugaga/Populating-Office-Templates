@@ -44,6 +44,10 @@ populating-office-templates/
       └── batch_injector.py            # 读取JSON配置并执行单事务批量注入的脚本
 ```
 
+> 💡 **PPT 模板资源下载**：
+> 更多配套的精美商务 PPT 模板资源，可通过夸克网盘链接进行下载：
+> 🔗 [夸克网盘下载地址 (https://pan.quark.cn/s/5c2b7d7dc8fb)](https://pan.quark.cn/s/5c2b7d7dc8fb)
+
 ---
 
 ## 🖼️ 效果示例 (Visual Examples)
