@@ -50,11 +50,9 @@ populating-office-templates/
 
 以下为使用本工作流处理前后的幻灯片页面对比：
 
-````carousel
-![修改前（模板原始状态）](images/模板示例.png)
-<!-- slide -->
-![修改后（使用本技能注入中文业务数据后）](images/skills后的PPT.png)
-````
+| 修改前（模板原始状态） | 修改后（使用本技能注入中文业务数据后） |
+| :---: | :---: |
+| ![修改前](images/模板示例.png) | ![修改后](images/skills后的PPT.png) |
 
 ---
 
