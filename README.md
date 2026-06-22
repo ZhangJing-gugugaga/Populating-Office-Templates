@@ -60,30 +60,41 @@ populating-office-templates/
 
 ---
 
-## 🚀 快速开始 (Quick Start)
+## 🚀 快速开始 (Usage for Humans)
 
-### 第一步：提取模板中的占位符路径与 ID
-使用 `extract_placeholders.py` 脚本，将模板 PPT 中的所有可编辑文本框及表格单元格提取成 JSON 结构：
+本技能的工具脚本经过了人性化设计，您只需三步即可完成任意 PPT 模版的快速数据注入：
+
+### 1. 提取模版占位符 (Extract)
+运行提取脚本，从 `Templates/` 文件夹中的模板提取所有可编辑的文本框、表格单元格至 `Tmp/` 缓存目录：
 ```bash
-python scripts/extract_placeholders.py "/path/to/template.pptx" "placeholders.json"
+# 示例：提取 0008 模板
+python scripts/extract_placeholders.py Templates/0008_template.pptx Tmp/my_mapping.json
 ```
 
-### 第二步：编辑内容映射
-打开生成的 `placeholders.json`，在对应的唯一 ID 下填入您想替换的真实中文业务数据，保存文件（例如命名为 `mapping.json`）。格式如：
+### 2. 直接在 JSON 中修改文本 (Edit In-Place)
+用任何文本编辑器（如 VS Code、Sublime Text 或记事本）打开刚生成的 `Tmp/my_mapping.json`。
+您会看到形如以下的结构，**直接在原位置修改 `"text"` 后面的内容**为您所需的真实业务中文文字，然后保存即可：
 ```json
-[
-  {
-    "path": "/slide[1]/shape[@id=100002]",
-    "text": "您的真实大标题内容"
-  }
-]
+{
+  "slide_1": [
+    {
+      "path": "/slide[1]/shape[@id=100002]",
+      "text": "直接在原位置修改此处的文字（支持换行符\\n）",
+      "id": 100002,
+      "type": "textbox",
+      "name": "文本框 3"
+    }
+  ]
+}
 ```
 
-### 第三步：一键原子注入
-运行 `batch_injector.py` 脚本，将内容一键安全地写入 PPT 副本中：
+### 3. 一键批量注入替换 (Inject)
+将修改后的 JSON 数据和您的 PPT 目标文件传入注入脚本，一键完成无损替换：
 ```bash
-python scripts/batch_injector.py "/path/to/template.pptx" "mapping.json"
+# 示例：将修改后的 my_mapping.json 批量注入到 Result 中的目标 PPT
+python scripts/batch_injector.py Result/生息守护_路演答辩.pptx Tmp/my_mapping.json
 ```
+运行完成后，`Result/生息守护_路演答辩.pptx` 中的文字便会被完美替换，且字体、字号、色值与排版完全保持不变！
 
 ---
 
