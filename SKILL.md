@@ -1,7 +1,7 @@
 ---
 name: populating-office-templates
 description: Use when migrating content from a text source (like a Business Plan or outline) into a PowerPoint (.pptx) or Word (.docx) layout template using officecli.
-argument-hint: ""
+argument-hint: "<template.pptx> <source.md> [ref.txt]"
 user-invocable: true
 allowed-tools: Read, Write, RunCommand
 ---
@@ -50,6 +50,8 @@ Execute the planning agent script using Python:
 Only proceed to **Step 1** after the Design Planning Document is fully generated, verified, and saved to `Result/ppt_development_document.md`.
 
 ### Step 1: Reconstruct Slide Structure (Atomic Batch)
+> ⚠️ **Before writing any files**: Confirm with the user that the output path in `Result/` is acceptable. If a file already exists at that path, ask whether to overwrite or use a new filename.
+
 Never add or remove slides sequentially in separate CLI commands inside loops. Doing so shifts index numbers dynamically and leads to collision or lock errors.
 Always copy the template first, compile all clone (`add --from`) and `remove` commands into a single JSON batch array, and execute them in one atomic process.
 
@@ -73,7 +75,21 @@ Apply the changes in a single transaction to the file in `Result/`:
 `python scripts/batch_injector.py Result/my_output.pptx Tmp/mapping.json`
 *(Or run `officecli batch Result/my_output.pptx --input Tmp/updates.json --stop-on-error`)*
 
+### Step 4: Verify and Clean Up
+After injection, run the following verification:
+
+1. **Visual spot-check**: Open the output `.pptx` from `Result/` and confirm slides match the design document (`Result/ppt_development_document.md`).
+2. **Error log review**: Check the console output from `batch_injector.py` — if any `set` commands failed, report the failed paths to the user.
+3. **File integrity**: Confirm the output file size is reasonable (not 0 bytes or suspiciously small).
+
+**Verdict**: If all checks pass, report success. If any injection failed, list the failed shape paths and suggest manual review.
+
 ## Common Mistakes & Red Flags
 - ❌ **Matching text by search (find=...) when unique IDs are available.** Newline characters and runtime spans split the string in OOXML, causing match failures.
 - ❌ **Modifying a presentation while it is open in WPS or Microsoft Office.** Lock conflicts will corrupt the output.
 - ❌ **Inserting raw SVG shapes.** This breaks PowerPoint's native shape formatting and compatibility.
+
+## Next Steps
+- Review the generated `.pptx` in PowerPoint or WPS to confirm visual fidelity.
+- If specific slides need adjustment, re-run Step 2–3 for those slides only.
+- To process a different template, repeat from Step 0 with the new template path.
