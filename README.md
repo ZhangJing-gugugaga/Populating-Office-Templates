@@ -76,7 +76,8 @@ git clone https://github.com/ZhangJing-gugugaga/PPT-templates-skill.git populati
 
 ### 3. 后台自动化工作流 (Under the Hood)
 当您输入上述指令后，AI 助手会根据技能自动执行以下动作：
-1. **重构**：自动生成结构调整命令，在 `Result/` 中生成具有指定物理页数的 PPT 框架。
-2. **审计**：自动在后台运行 `scripts/extract_placeholders.py` 提取模板页的底层物理 ID 映射。
-3. **映射**：根据您的商业计划书内容，自动在后台生成 `Tmp/mapping.json` 对齐物理 ID 与文本。
-4. **注入**：自动在后台调用 `scripts/batch_injector.py`，以单事务形式原子注入文字，并清理临时文件。
+1. **规划 (Plan)**：启动子代理精细分析模板的配色与字体规范，提炼输入文档，生成一份符合约束的 `Result/ppt_development_document.md` 逐页内容与版式匹配规划文档。
+2. **重构 (Reconstruct)**：基于规划的物理页面映射，自动生成页面克隆与剪切脚本，生成指定页数的干净 PPT 物理框架。
+3. **审计 (Audit)**：自动在后台运行 `scripts/extract_placeholders.py` 提取所有卡片和表格单元格的唯一物理 ID 映射。
+4. **映射 (Map)**：根据规划文档内容，自动匹配段落并生成 `Tmp/mapping.json` 数据注入包。
+5. **注入 (Inject)**：自动运行 `scripts/batch_injector.py` 完成内存单事务替换，清理全部临时脚本和缓存文件。
